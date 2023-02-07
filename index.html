@@ -72,6 +72,11 @@
               y: Math.floor(Math.random() * pipeUp.height) - pipeUp.height,
             });
           }
+
+         
+          if (pipe[i].x == 5) {
+            score++;
+          }
         }
 
         ctx.drawImage(meatBoy, xPos, yPos, 64, 128);
@@ -80,7 +85,7 @@
 
         ctx.fillStyle = "#000";
         ctx.font = "24px Verdana";
-        ctx.fillText("Счет: " + score, 10, cvs.height - 450);
+        ctx.fillText("Score: " + score, 10, cvs.height - 450);
 
         requestAnimationFrame(draw);
       };
