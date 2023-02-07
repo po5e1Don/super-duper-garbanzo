@@ -26,12 +26,15 @@
       pipeUp.src = "img/pipeUp.png";
       pipeBottom.src = "img/pipeBottom.png";
 
+      let meatBoySizeX = meatBoy.width ="64"
+      let meatBoySizeY = meatBoy.height = "100"
       pipeUp.height = "300";
       pipeUp.width = "50";
       pipeBottom.height = "300";
       pipeBottom.width = "50";
+      
 
-      let gap = 128;
+      let gap = 150;
 
       var pipe = [];
 
@@ -48,7 +51,7 @@
         yPos -= 30;
       }
 
-      let xPos = 10;
+      let xPos = 0;
       let yPos = 100;
       let grav = 1.1;
 
@@ -73,13 +76,17 @@
             });
           }
 
-         
+          if (yPos >= 400 || yPos <= -50){
+            location.reload()
+          
+          }
+
           if (pipe[i].x == 5) {
             score++;
           }
         }
 
-        ctx.drawImage(meatBoy, xPos, yPos, 64, 128);
+        ctx.drawImage(meatBoy, xPos, yPos, meatBoySizeX, meatBoySizeY) ;
 
         yPos += grav;
 
