@@ -7,20 +7,65 @@
     <title>Document</title>
   </head>
   <body>
-    <canvas
-      id="canvas"
-      style="width: 300px; height: 600px; border: 2px solid black"
-    ></canvas>
+    <canvas id="canvas"></canvas>
 
     <script>
       let cvs = document.getElementById("canvas");
       var ctx = cvs.getContext("2d");
+      cvs.width = 300;
+      cvs.height = 600;
+      cvs.style.border = "1px solid black";
 
       let meatBoy = new Image();
+      let bg = new Image();
+      let pipeUp = new Image();
+      let pipeBottom = new Image();
+
+      bg.src = "img/bg.png";
       meatBoy.src = "img/Meatboy.png";
+      pipeUp.src = "img/pipeUp.png";
+      pipeBottom.src = "img/pipeBottom.png";
+
+      let gap = 90;
+
+      var pipe = [];
+
+      pipe[0] = {
+        x: cvs.width,
+        y: 0,
+      };
+
+      document.addEventListener("keyup", moveUp);
+
+      function moveUp() {
+        yPos -= 20;
+      }
+
+      let xPos = 10;
+      let yPos = 100;
+      let grav = 1;
 
       window.onload = function draw() {
-        ctx.drawImage(meatBoy,0,0, 100, 50);
+        ctx.drawImage(bg, 0, 0, 300, 605);
+
+        for (var i = 0; i < pipe.length; i++) {
+          ctx.drawImage(pipeUp, pipe[i].x, pipe[i].y, 50, 300);
+          ctx.drawImage(pipeBottom, pipe[i].x, 400, 50, 400);
+
+          pipe[i].x--;
+          if (pipe[i].x == 125) {
+            pipe.push({
+              x: cvs.width,
+              y: Math.floor(Math.random() * pipeUp.height) - pipeUp.height,
+            });
+          }
+        }
+
+        ctx.drawImage(meatBoy, xPos, yPos, 64, 128);
+
+        yPos += grav;
+
+        requestAnimationFrame(draw);
       };
     </script>
   </body>
