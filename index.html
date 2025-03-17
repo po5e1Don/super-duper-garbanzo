@@ -9,7 +9,7 @@
   <body>
     <canvas id="canvas"></canvas>
     <br>  
-<p>Click and game!</p>
+    <p>Click and game!</p>
     <script>
       let cvs = document.getElementById("canvas");
       var ctx = cvs.getContext("2d");
@@ -27,10 +27,10 @@
       pipeUp.src = "img/pipeUp.png";
       pipeBottom.src = "img/pipeBottom.png";
 
-      let meatBoySizeX = (meatBoy.width = "64");
-      let meatBoySizeY = (meatBoy.height = "64");
-      pipeUp.height = "300";
-      pipeBottom.height = "300";
+      let meatBoySizeX = (meatBoy.width = 64);
+      let meatBoySizeY = (meatBoy.height = 64);
+      pipeUp.height = 300;
+      pipeBottom.height = 300;
 
       let gap = 95;
 
@@ -53,6 +53,34 @@
       let yPos = 100;
       let grav = 1.1;
 
+      function checkCollision() {
+        for (var i = 0; i < pipe.length; i++) {
+          // Координаты труб
+          let pipeUpX = pipe[i].x;
+          let pipeUpY = pipe[i].y;
+          let pipeBottomY = pipe[i].y + pipeUp.height + gap;
+
+          // Проверка столкновения с верхней трубой
+          if (
+            xPos + meatBoySizeX > pipeUpX &&
+            xPos < pipeUpX + 50 &&
+            yPos < pipeUpY + pipeUp.height
+          ) {
+            return true;
+          }
+
+          // Проверка столкновения с нижней трубой
+          if (
+            xPos + meatBoySizeX > pipeUpX &&
+            xPos < pipeUpX + 50 &&
+            yPos + meatBoySizeY > pipeBottomY
+          ) {
+            return true;
+          }
+        }
+        return false;
+      }
+
       window.onload = function draw() {
         ctx.drawImage(bg, 0, 0, 300, 500);
 
@@ -74,14 +102,6 @@
             });
           }
 
-          if (yPos >= 440 || yPos <= -50){
-            location.reload()
-
-          }
-
-
-          
-
           if (pipe[i].x == 5) {
             score++;
           }
@@ -90,6 +110,15 @@
         ctx.drawImage(meatBoy, xPos, yPos, meatBoySizeX, meatBoySizeY);
 
         yPos += grav;
+
+        // Проверка столкновений
+        if (
+          yPos >= 440 || 
+          yPos <= -50 || 
+          checkCollision()
+        ) {
+          location.reload(); // Перезапуск игры
+        }
 
         ctx.fillStyle = "#000";
         ctx.font = "24px Verdana";
